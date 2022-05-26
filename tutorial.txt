@@ -1,0 +1,10 @@
+How to push code into repository (github)?
+- git add .
+- git commit -m "Your message"'
+- git push origin <branch name (default-nya main)>
+
+How to update code from repository (github)?
+- git pull origin <branch name (default-nya main)>
+
+How to run code?
+- npm start
