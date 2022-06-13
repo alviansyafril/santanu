@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable */
+import {useEffect, useState} from 'react';
 import L from 'leaflet';
 import {
   MapContainer,
@@ -6,19 +7,15 @@ import {
   Circle,
   Polyline,
   ImageOverlay,
-  useMap,
-  crs,
+  useMap
 } from 'react-leaflet';
 import utils from 'renderer/utils';
-import radarIcon from '../../../assets/radarkebolak4.png';
-// import radarIcon from 'https://i.imgur.com/kDDFvUp.png';
-
-// const currentPosition = [-6.2839163, 106.6585511];
-const currentPosition = [-6.8543788, 107.5867193];
+import dataawan from '../../../assets/mainMapDataset.js';
+const currentPosition = [-6.894941, 107.58648];
 
 const MarkerRadar = () => {
   const map = useMap();
-  // const radiusCrossHair = 12100;
+  const [indexImage, setIndexImage] = useState(0)
   const radiusCrossHair = 12100;
   const xyCoordinate = map.options.crs.project(L.latLng(currentPosition));
 
@@ -28,7 +25,6 @@ const MarkerRadar = () => {
   const bottom = L.point(xyCoordinate).subtract([0, radiusCrossHair]);
 
   const crossHairPolyline = [left, right, top, bottom].map((point) =>
-    // const crossHairPolyline = [right, left, top, bottom].map((point) =>
     map.options.crs.unproject(point)
   );
 
@@ -36,10 +32,16 @@ const MarkerRadar = () => {
     ...utils.sliceArrayIntoGroups(crossHairPolyline, 2)
   );
 
+  useEffect(()=>{
+    if (indexImage < dataawan.length-1) {
+      setTimeout(() => setIndexImage(indexImage + 1), 2000);
+    } else {
+      setIndexImage(0)
+    }
+  },[indexImage])
+
   return (
     <>
-      {/* <div class="radar">
-        <div class="pointer"> */}
       {[4000, 8000, 12000].map((radius) => {
         return (
           <Circle
@@ -55,22 +57,19 @@ const MarkerRadar = () => {
         .map((positions, index) => {
           return (
             <Polyline
-              key={index}
+              key={positions}
               positions={positions}
               pathOptions={{ color: '#4CA638', fill: false }}
             />
           );
         })}
       <ImageOverlay
-        url={radarIcon}
+        url={dataawan[indexImage].img}
         bounds={radarBounds}
         opacity={1}
         zIndex={10}
-        className="spin"
+        className="portrait"
       />
-      {/* </div>
-      </div>
-      ; */}
     </>
   );
 };

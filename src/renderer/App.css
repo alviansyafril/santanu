@@ -22,8 +22,9 @@ html {
 }
 
 .spin {
-  position: absolute;
-  left: 723px;
+  position: fixed !important;
+  left: 375px;
+  top: 395px;
   animation: spin 4s linear infinite;
 }
 
@@ -75,6 +76,10 @@ html {
   clip-path: polygon(100% 0, 100% 10%, 50% 100%, 0 100%, 0 0);
   -webkit-animation: rotate360 3s infinite linear;
   animation: rotate360 3s infinite linear;
+}
+
+.leaflet-control {
+  position: fixed !important;
 }
 
 .radar .pointer:after {
