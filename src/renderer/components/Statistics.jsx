@@ -15,6 +15,7 @@ import { Line } from 'react-chartjs-2';
 import { add, format } from 'date-fns';
 import 'chartjs-adapter-date-fns';
 import utils from '../utils';
+import dataset from '../../../assets/chartjs-data.json';
 
 ChartJS.register(
   CategoryScale,
@@ -33,24 +34,24 @@ const currentDateHour = new Date(
 );
 
 const areas = [
-  'Sukarame',
-  'Majalaya',
-  'Area2',
-  'Cihanjuang SMD',
-  'Cikadut',
-  'Jatihandap',
-  'Pagarsih',
-  'Rancasari',
-  'Panyileukan',
-  'Mengger',
-  'Margasuka',
-  'Cigondewah Rahayu',
-  'Cigondewah',
-  'Sukahaji',
-  'Suka Asih',
-  'Cijerah',
-  'Sukasari',
-  'Karang Pamulang',
+  { label: 'Sukarame', area_id: 49 },
+  { label: 'Majalaya', area_id: 51 },
+  { label: 'Area2', area_id: 52 },
+  { label: 'Cihanjuang SMD', area_id: 74 },
+  { label: 'Cikadut', area_id: 75 },
+  { label: 'Jatihandap', area_id: 78 },
+  { label: 'Pagarsih', area_id: 82 },
+  { label: 'Rancasari', area_id: 96 },
+  { label: 'Panyileukan', area_id: 97 },
+  { label: 'Mengger', area_id: 98 },
+  { label: 'Margasuka', area_id: 102 },
+  { label: 'Cigondewah Rahayu', area_id: 103 },
+  { label: 'Cigondewah', area_id: 104 },
+  { label: 'Sukahaji', area_id: 110 },
+  { label: 'Suka Asih', area_id: 111 },
+  { label: 'Cijerah', area_id: 112 },
+  { label: 'Sukasari', area_id: 113 },
+  { label: 'Karang Pamulang', area_id: 114 },
 ];
 
 const pointStyles = [
@@ -86,8 +87,11 @@ const options = {
   scales: {
     x: {
       type: 'time',
-      min: format(currentDateHour, currentFormat),
-      max: format(add(currentDateHour, { minutes: 60 }), currentFormat),
+      min: format(
+        new Date(dataset.history[dataset.history.length - 1].datetime_utc),
+        currentFormat
+      ),
+      max: format(new Date(dataset.history[0].datetime_utc), currentFormat),
       time: {
         unit: 'minute',
         stepSize: 15,
@@ -109,21 +113,16 @@ const options = {
   },
 };
 
-const totalData = Array.from(Array(50).keys());
-
 const getDatasets = () => {
   return areas.map((area) => {
     const color = utils.getRandomRGB();
 
     return {
-      label: area,
-      data: totalData.map((x, i) => {
+      label: area.label,
+      data: dataset.history.map((x) => {
         return {
-          x: format(
-            add(currentDateHour, { minutes: i * (x + 1) }),
-            currentFormat
-          ),
-          y: faker.datatype.number({ min: 0, max: 20 }),
+          x: format(new Date(x.datetime_utc), currentFormat),
+          y: x.chart[area.area_id].mean,
         };
       }),
       borderColor: color,
