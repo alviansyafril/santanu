@@ -12,7 +12,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { add, format } from 'date-fns';
+import { format } from 'date-fns';
 import 'chartjs-adapter-date-fns';
 import utils from '../utils';
 import dataset from '../../../assets/chartjs-data.json';
@@ -29,9 +29,6 @@ ChartJS.register(
 );
 
 const currentFormat = 'yyyy-MM-dd HH:mm:ss';
-const currentDateHour = new Date(
-  new Date().setMinutes(new Date().getMinutes() > 30 ? 30 : 0, 0, 0)
-);
 
 const areas = [
   { label: 'Sukarame', area_id: 49 },
