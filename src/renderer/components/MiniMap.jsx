@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import L from 'leaflet';
 import {
   MapContainer,
@@ -7,16 +7,19 @@ import {
   Circle,
   Polyline,
   ImageOverlay,
-  useMap
+  useMap,
+  GeoJSON,
+  Tooltip,
 } from 'react-leaflet';
 import utils from 'renderer/utils';
 import dataawan from '../../../assets/miniMapDataset.js';
+import geojson from '../../../assets/area-pantauan.json';
 
 const currentPosition = [-6.894941, 107.58648];
 
 const MarkerRadar = () => {
   const map = useMap();
-  const [indexImage, setIndexImage] = useState(0)
+  const [indexImage, setIndexImage] = useState(0);
   const radiusCrossHair = 12100;
   const xyCoordinate = map.options.crs.project(L.latLng(currentPosition));
 
@@ -33,22 +36,22 @@ const MarkerRadar = () => {
     ...utils.sliceArrayIntoGroups(crossHairPolyline, 2)
   );
 
-  useEffect(()=>{
-    if (indexImage < dataawan.length-1) {
+  useEffect(() => {
+    if (indexImage < dataawan.length - 1) {
       setTimeout(() => setIndexImage(indexImage + 1), 2000);
     } else {
-      setIndexImage(0)
+      setIndexImage(0);
     }
-  },[indexImage])
+  }, [indexImage]);
 
   return (
-      <ImageOverlay
-        url={dataawan[indexImage].img}
-        bounds={radarBounds}
-        opacity={1}
-        zIndex={10}
-        className="portrait"
-      />
+    <ImageOverlay
+      url={dataawan[indexImage].img}
+      bounds={radarBounds}
+      opacity={1}
+      zIndex={10}
+      className="portrait"
+    />
   );
 };
 
@@ -66,6 +69,15 @@ const MiniMap = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <MarkerRadar />
+        {geojson.map((area) => (
+          <GeoJSON
+            key={JSON.parse(area.geojson)}
+            data={JSON.parse(area.geojson)}
+            style={{ color: area.color }}
+          >
+            <Tooltip>{area.area_name}</Tooltip>
+          </GeoJSON>
+        ))}
       </MapContainer>
     </div>
   );
