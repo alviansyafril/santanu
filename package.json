@@ -252,7 +252,8 @@
     "react-dom": "^18.0.0",
     "react-hook-use-state": "^1.1.0",
     "react-leaflet": "^4.0.0",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "react-toastify": "^9.0.5"
   },
   "devEngines": {
     "node": ">=14.x",
