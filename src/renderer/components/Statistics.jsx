@@ -14,7 +14,6 @@ import {
 import { Line } from 'react-chartjs-2';
 import { format } from 'date-fns';
 import 'chartjs-adapter-date-fns';
-import { ToastContainer, toast } from 'react-toastify';
 import utils from '../utils';
 import dataset from '../../../assets/chartjs-data.json';
 
@@ -52,18 +51,7 @@ const areas = [
   { label: 'Karang Pamulang', area_id: 114 },
 ];
 
-const pointStyles = [
-  'circle',
-  // 'cross',
-  // 'crossRot',
-  // 'dash',
-  // 'line',
-  'rect',
-  'rectRounded',
-  'rectRot',
-  // 'star',
-  'triangle',
-];
+const pointStyles = ['circle', 'rect', 'rectRounded', 'rectRot', 'triangle'];
 
 const options = {
   interaction: { intersect: false, mode: 'index' },
@@ -96,7 +84,6 @@ const options = {
         displayFormats: { hour: 'HH:mm', minute: 'HH:mm' },
         tooltipFormat: 'dd/MM/yyyy HH:mm',
       },
-      // ticks: { source: 'labels' },
     },
     y: {
       display: true,
@@ -109,24 +96,6 @@ const options = {
       ticks: { stepSize: 10 },
     },
   },
-};
-
-const showAlert = () => {
-  const existed = [];
-  areas.map((area) => {
-    return dataset.history.map((x) => {
-      if (
-        x.chart[area.area_id].mean > 17 &&
-        existed.indexOf(area.area_id) === -1
-      ) {
-        existed.push(area.area_id);
-        return toast.error(`BANJIR kAWAN daerah ${area.label}`, {
-          toastId: area.area_id,
-        });
-      }
-      return <></>;
-    });
-  });
 };
 
 const getDatasets = () => {
@@ -157,14 +126,10 @@ const getDatasets = () => {
 const data = { datasets: getDatasets() };
 
 const Statistics = () => {
-  showAlert();
   return (
-    <>
-      <div className="col-start-3 row-span-1 p-2">
-        <Line options={options} data={data} className="!w-full !h-full" />
-      </div>
-      <ToastContainer />
-    </>
+    <div className="col-start-3 row-span-1 p-2">
+      <Line options={options} data={data} className="!w-full !h-full" />
+    </div>
   );
 };
 
